@@ -2,7 +2,14 @@
 
 ---
 
-## docker-compose.yml の作成
+## .env の作成
+
+```sh
+$ mv .env.sample .env
+$ nano ./.env
+```
+
+## docker-compose.yml の編集
 
 ```sh
 $ nano ./docker-compose.yml
@@ -11,9 +18,15 @@ $ nano ./docker-compose.yml
 ## コンテナの起動
 
 ```sh
-$ cd ./
-$ docker-compose up -d
-$ curl -H "Host: whoami.local" localhost
+$ ./start.sh
 ```
 
-> `I'm 311ecee4299e`
+```sh
+$ docker ps
+```
+
+| IMAGE                                  | PORTS                                    | NAMES             |
+| -------------------------------------- | ---------------------------------------- | ----------------- |
+| nginx                                  | 0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp | nginx-web         |
+| jwilder/docker-gen                     |                                          | nginx-gen         |
+| jrcs/letsencrypt-nginx-proxy-companion |                                          | nginx-letsencrypt |

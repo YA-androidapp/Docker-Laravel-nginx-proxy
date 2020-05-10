@@ -15,6 +15,9 @@ services:
       - ${NGINX_FILES_PATH:-./data}/html:/usr/share/nginx/html
       - ${NGINX_FILES_PATH:-./data}/certs:/etc/nginx/certs:ro
       - ${NGINX_FILES_PATH:-./data}/htpasswd:/etc/nginx/htpasswd:ro
+    networks:
+      - default
+      - outside
     logging:
       driver: ${NGINX_WEB_LOG_DRIVER:-json-file}
       options:
@@ -36,6 +39,9 @@ services:
       - ${NGINX_FILES_PATH:-./data}/htpasswd:/etc/nginx/htpasswd:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl:ro
+    networks:
+      - default
+      - outside
     logging:
       driver: ${NGINX_GEN_LOG_DRIVER:-json-file}
       options:
@@ -55,6 +61,9 @@ services:
     environment:
       NGINX_DOCKER_GEN_CONTAINER: ${DOCKER_GEN:-nginx-gen}
       NGINX_PROXY_CONTAINER: ${NGINX_WEB:-nginx-web}
+    networks:
+      - default
+      - outside
     logging:
       driver: ${NGINX_LETSENCRYPT_LOG_DRIVER:-json-file}
       options:
@@ -65,3 +74,6 @@ networks:
   default:
     external:
       name: ${NETWORK:-webproxy}
+  outside:
+    external:
+      name: ${SERVICE_NETWORK:-webservices}
