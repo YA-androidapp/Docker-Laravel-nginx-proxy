@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  rstudio:
+    #restart: always
+    image: tokyor/rstudio:latest
+    environment:
+      - PASSWORD=TomatoSoup
+    ports:
+      - "8787:8787"
+
+  reverse-proxy:
+    image: nginx
+    environment:
+      - EULA=true
+      - VIRTUAL_HOST=rstudio.EXAMPLE.NET
+      - LETSENCRYPT_HOST=rstudio.EXAMPLE.NET
+      - LETSENCRYPT_EMAIL=rstudio@EXAMPLE.NET
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "443"
+    depends_on: # rstudioの後に起動させる
+      - rstudio
+    links:
+      - "rstudio:rstudio"
+networks:
+  default:
+    external:
+      name: ${NETWORK:-webproxy}
