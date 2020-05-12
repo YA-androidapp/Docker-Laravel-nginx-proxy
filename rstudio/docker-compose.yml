@@ -2,7 +2,7 @@ version: "3"
 
 services:
   rstudio:
-    #restart: always
+    restart: always
     image: tokyor/rstudio:latest
     environment:
       - PASSWORD=TomatoSoup
