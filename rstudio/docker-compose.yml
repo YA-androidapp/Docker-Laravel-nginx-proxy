@@ -6,8 +6,8 @@ services:
     image: tokyor/rstudio:latest
     environment:
       - PASSWORD=TomatoSoup
-    ports:
-      - "8787:8787"
+    expose:
+      - "8787"
 
   reverse-proxy:
     image: nginx
@@ -24,6 +24,7 @@ services:
       - rstudio
     links:
       - "rstudio:rstudio"
+
 networks:
   default:
     external:
